@@ -1,6 +1,6 @@
 var canvasWidth = 800;
 var canvasHeight = 800;
-var pxwidth = 2;
+var pxwidth = 10;
 var Type = {
   sand: 'sand',
   water: 'water',
@@ -11,7 +11,7 @@ var Type = {
 function setup() {
   createCanvas(canvasWidth, canvasHeight);
   noStroke();
-  fill(255, 196, 0);
+  fill(255, 196, 0); // color = orange
   grid = newArray();
 }
 
@@ -58,7 +58,7 @@ function newSand(i, j){
     if (grid[i-1][j+1] == Type.void){swapParticle(i, j, -1, 1)}
     else if (grid[i+1][j+1] == Type.void){swapParticle(i, j, 1, 1)}
   }
-  else if (grid[i][j+1] == Type.sand && i == 0){swapParticle(i, j, 1, 1)}
+  else if (grid[i][j+1] == Type.sand && i == 0){swapParticle(i, j, 1, 0)}
   else if (grid[i][j+1] == Type.sand && i == canvasWidth / pxwidth - 1){swapParticle(i, j, -1, 1)}
 }
 
@@ -68,7 +68,7 @@ function swapParticle(i, j, offsetX, offsetY){
 }
 
 function boundary(i, j, z){
-  if (j + z < canvasHeight / pxwidth - 1 && i + z < canvasWidth / pxwidth - 1 && j - z >= 0 && i - z  > 0)
+  if (j + z < canvasHeight / pxwidth && i + z < canvasWidth / pxwidth && j - z >= 0 && i - z  > 0)
     return 1;
   else
     return 0;
@@ -85,7 +85,7 @@ function drawSim(){
 }
 
 function newArray(){
-  let grid = new Array(canvasWidth / pxwidth);
+  var grid = new Array(canvasWidth / pxwidth);
   for ( i = 0; i < canvasWidth / pxwidth; i++)
     grid[i] = new Array(canvasHeight / pxwidth).fill(Type.void);
   return grid;
@@ -95,6 +95,8 @@ function update(){
   selColor = document.getElementById("brushColor").value;
   brushSize = document.getElementById("brushSlider").value;
   document.getElementById("framerate").innerHTML = round(frameRate());
+  document.getElementById("xpos").innerHTML = round(pos.x / pxwidth);
+  document.getElementById("ypos").innerHTML = round(pos.y / pxwidth);
 }
 
 function clearGrid(){
