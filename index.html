@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"><head>
+    <script src="p5/p5.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8">
+
+  </head>
+  <body>
+    <div>
+      <p>Pixel Width</p>
+      <select id="pxWidth">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+      </select>
+    </div>
+    <div>
+      <p>Color</p>
+      <select id="brushColor">
+        <option value="1">Black</option>
+        <option value="2">Yellow</option>
+        <option value="3">Orange</option>
+        <option value="4">Blue</option>
+      </select>
+    </div>
+    <div class="brushSlider">
+      <p>Brush Size </p>
+      <input type="range" min="0" max="6" value="0" id="brushSlider">
+    </div>
+    <button onclick="clearGrid()" style="margin-left:20px">Clear</button>
+    <button onclick="printButton()" style="margin-left:20px">Print</button>
+    <div><p id="framerate"></p></div>
+    <script src="sketch.js"></script>
+</body></html>
