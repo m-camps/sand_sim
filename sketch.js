@@ -114,4 +114,6 @@ function clearGrid(){
 
 function  printButton(){
   console.log(Type.current);
+  console.log(Type.rock)
+  console.log(Type.current == Type.rock)
 }
