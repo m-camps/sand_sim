@@ -1,48 +1,23 @@
 <!DOCTYPE html><html lang="en"><head>
-    <script src="p5/p5.js"></script>
+    <script src="library/p5.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8">
 
   </head>
   <body>
-    <div>
-      <p>DPI</p>
-      <select id="DPI">
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="25">25</option>
-      </select>
-    </div>
-	<div>
-		<p>Element</p>
+    <script src="env.js"></script>
+    <script src="particle.js"></script>
+    <script src="sketch.js"></script>
+    <p>Element</p>
 		<select id="element">
 		  <option value="sand">Sand</option>
 		  <option value="rock">Rock</option>
       <option value="water">Water</option>
+      <option value="steam">Steam</option>
+      <option value="void">Delete</option>
 		</select>
-	  </div>
-    <div>
-      <p>Color</p>
-      <select id="brushColor">
-        <option value="1">Black</option>
-        <option value="2">Yellow</option>
-        <option value="3">Orange</option>
-        <option value="4">Blue</option>
-      </select>
-    </div>
-    <div class="brushSlider">
-      <p>Brush Size </p>
-      <input type="range" min="0" max="6" value="0" id="brushSlider">
-    </div>
-    <button onclick="clearGrid()" style="margin-left:20px">Clear</button>
-    <button onclick="printButton()" style="margin-left:20px">Print</button>
-    <div><p id="framerate"></p></div>
-    <div><p>X</p></div>
-    <div><p id="xpos"></p></div>
-    <div><p>Y</p></div>
-    <div><p id="ypos"></p></div>
-    <div><p>Type</p></div>
-    <div><p id="type"></p></div>
-    <script src="sketch.js"></script>
-</body></html>
+    <p id="framerate">hey</p>
+    <p id="total"></p>
+    <div id="canvas-div"></div>
+  </body>
+</html>

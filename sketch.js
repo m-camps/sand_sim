@@ -1,125 +1,77 @@
-var canvasWidth = 800;
-var canvasHeight = 800;
-var dpi = 10;
-var grid = 0;
-var tmp = 0;
-var Type = {
-  sand: 'sand',
-  water: 'water',
-  rock: 'rock',
-  void: 'void',
-  current: 'sand', 
+let pos = 0;
+let gridWidth = 200;
+let gridHeight = 200;
+let pxSize = 4;
+let bg = '#5a5f6b';
+let env;
+let element;
+let brushSize = 3;
+let ctx;
+
+const type = {
+  'sand': SandElement,
+  'water': WaterElement,
+  'steam': SteamElement,
+  'rock': RockElement,
 }
 
 function setup() {
-  createCanvas(canvasWidth, canvasHeight);
-  noStroke();
-  newArray();
+  env = new Environment(gridWidth, gridHeight);
+
+  // Init p5.js canvas
+  let p5canvas = createCanvas(gridWidth * pxSize, gridHeight * pxSize);
+
+  // Use default js canvas instead of p5.js for faster performance
+  let canvas = document.getElementById('defaultCanvas0');
+  ctx = canvas.getContext('2d');
+
+  //Link canvas to p5canvas
+  p5canvas.parent('canvas-div');
+
+  pos = createVector(pmouseX, pmouseY);
+  console.log(env.grid);
+  console.log(env.particleSet);
+  background(bg);
 }
 
 function draw() {
-  background(100);
-  fill(150);
-  rect(dpi, dpi, canvasWidth - (2*dpi), canvasHeight - (2*dpi));
-  pos = createVector(pmouseX - pmouseX % dpi, pmouseY - pmouseY % dpi);
   click();
-  revSim();
-  drawSim();
-  updateUI();
+  for (let p of env.particleSet){
+    p.update();
+    // p.checkStatic();
+  }
+  checkSelection();
 }
-
 
 function click(){
   if (mouseIsPressed){
-    if (mouseButton === LEFT && pos.x < canvasWidth - dpi && pos.y < canvasHeight - dpi && pos.x > 0 && pos.y > 0){
-      grid[pos.x/dpi][pos.y/dpi] = Type.current;
+    pos.set(floor(pmouseX / pxSize), floor(pmouseY / pxSize));
+    if (mouseButton === LEFT && pos.x > 0 && pos.y > 0 && pos.x < gridWidth - 1){
+      brush(pos.x, pos.y, env);
     }
   }
 }
 
-function sim(){
-  for (let i = 0; i < canvasWidth / dpi - 1; i++){
-    for (let j = 0; j < canvasHeight / dpi - 2; j++){
-      if (grid[i][j] == Type.sand){sand(i, j)}
-		  if (grid[i][j] == Type.rock){rock(i, j)}
-      if (grid[i][j] == Type.water){water(i, j)}
+function  randomizeColorRGBtoHex(r,g,b,diff){
+  r = floor(random() * (r - (r - diff)) + r - diff);
+  g = floor(random() * (g - (g - diff)) + g - diff);
+  b = floor(random() * (b - (b - diff)) + b - diff);
+  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+function  checkSelection(){
+  element = document.getElementById("element").value;
+  document.getElementById("framerate").innerHTML = floor(frameRate());
+  document.getElementById("total").innerHTML = env.particleSet.size;
+}
+
+function brush(x, y, env){
+  for (let i = x - brushSize; i <= x + brushSize; i++){
+    for(let j = y - brushSize; j <= y + brushSize; j++){
+      if (env.grid[i][j] == false){
+        env.addParticle(new type[element](i, j, env));
+      }
     }
   }
 }
-
-function revSim(){
-  for (let i = canvasWidth / dpi - 2; i > 0; i--){
-    for (let j = canvasHeight / dpi - 3; j > 0; j--){
-      if (grid[i][j] == Type.sand){sand(i, j)}
-		  if (grid[i][j] == Type.rock){rock(i, j)}
-      if (grid[i][j] == Type.water){water(i, j)}
-    }
-  }
-}
-
-// function copyArray(src){
-//   dest = new Array(canvasWidth / dpi);
-//   for (let i = 0; i < canvasWidth / dpi; i++)
-//     dest[i] = src[i].slice();
-//   return dest;
-// }
-
-function rock(i, j){
-  return  ;
-}
-
-function sand(i, j){
-  if (grid[i][j+1] == Type.void){swapParticle(i, j, 0, 1, Type.sand, Type.void)}
-  else if (grid[i][j+1] == Type.water){swapParticle(i, j, 0, 1, Type.sand, Type.water)}
-  else if (grid[i-1][j+1] == Type.void && i != 1){swapParticle(i, j, -1, 1, Type.sand, Type.void)}
-  else if (grid[i+1][j+1] == Type.void && i != canvasWidth / dpi - 2){swapParticle(i, j, 1, 1, Type.sand, Type.void)}
-}
-
-function water(i, j){
-  if (grid[i][j+1] == Type.void){swapParticle(i, j, 0, 1, Type.water, Type.void)}
-  else if (grid[i+1][j] == Type.void && i != canvasWidth / dpi - 2){swapParticle(i, j, 1, 0, Type.water, Type.void)}
-  else if (grid[i-1][j] == Type.void && i != 1){swapParticle(i, j, -1, 0, Type.water, Type.void)}
-}
-
-function swapParticle(i, j, offsetX, offsetY, element, swap){
-  grid[i+offsetX][j+offsetY] = element;
-  grid[i][j] = swap;
-}
-
-function drawSim(){
-	for (let i = 0; i < canvasWidth / dpi; i++){
-		for (let j = 0; j < canvasHeight / dpi; j++){
-			if (grid[i][j] == Type.sand){fill(255, 196, 0)}
-      if (grid[i][j] == Type.rock){fill('grey')}
-      if (grid[i][j] == Type.water){fill(212, 241, 249)}
-    	if (grid[i][j] != Type.void){rect(i * dpi, j * dpi, dpi, dpi);}
-    }
-  }
-}
-
-function newArray(){
-  grid = new Array(canvasWidth / dpi);
-  for ( i = 0; i < canvasWidth / dpi; i++)
-    grid[i] = new Array(canvasHeight / dpi).fill(Type.void);
-}
-
-function updateUI(){
-  selColor = document.getElementById("brushColor").value;
-  brushSize = document.getElementById("brushSlider").value;
-  Type.current = document.getElementById("element").value;
-  document.getElementById("framerate").innerHTML = round(frameRate());
-  document.getElementById("xpos").innerHTML = round(pos.x / dpi);
-  document.getElementById("ypos").innerHTML = round(pos.y / dpi);
-  document.getElementById("type").innerHTML = Type.current;
-}
-
-function clearGrid(){
-  grid = newArray();
-}
-
-function  printButton(){
-  // console.log(Type.current);
-  // console.log(Type.rock)
-  // console.log(Type.current == Type.rock)
-  console.log(grid);
-}
+  // console.log(random() * (220 - 200) + 200)
