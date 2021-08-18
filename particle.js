@@ -8,11 +8,9 @@ class Particle{
 		this.alive = 1;
 	}
 	
-	paint(ctx){
-		ctx.fillStyle = '#5a5f6b';
-		ctx.fillRect(this.oldX * pxSize, this.oldY * pxSize, pxSize, pxSize)
-		ctx.fillStyle = this.color;
-		ctx.fillRect(this.x * pxSize, this.y * pxSize, pxSize, pxSize);
+	paint(){
+		drawRect(this.oldX, this.oldY, bg);
+		drawRect(this.x, this.y, this.color);
 	}
 
 	checkStatic(){
@@ -32,7 +30,7 @@ class Particle{
 		this.env.moveParticle(this, x, y)
 		this.x = x;
 		this.y = y;
-		this.paint(ctx);
+		this.paint();
 	}
 
 	checkIsEmpty(x, y){
@@ -125,6 +123,14 @@ class StaticElement extends Particle{
 	constructor(x, y, env){
 		super(x, y, env);
 		this.color = '#282828';
+		this.alive = 0;
+	}
+}
+
+class VoidElement extends Particle{
+	constructor(x, y, env){
+		super(x, y, env);
+		this.color = bg;
 		this.alive = 0;
 	}
 }

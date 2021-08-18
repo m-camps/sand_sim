@@ -1,11 +1,11 @@
 let pos = 0;
-let gridWidth = 200;
-let gridHeight = 200;
-let pxSize = 4;
+let gridWidth = 100;
+let gridHeight = 100;
+let pxSize = 6;
 let bg = '#5a5f6b';
 let env;
 let element;
-let brushSize = 3;
+let brushSize = 0;
 let ctx;
 
 const type = {
@@ -13,10 +13,10 @@ const type = {
   'water': WaterElement,
   'steam': SteamElement,
   'rock': RockElement,
+  'void': VoidElement,
 }
 
 function setup() {
-  env = new Environment(gridWidth, gridHeight);
 
   // Init p5.js canvas
   let p5canvas = createCanvas(gridWidth * pxSize, gridHeight * pxSize);
@@ -28,10 +28,11 @@ function setup() {
   //Link canvas to p5canvas
   p5canvas.parent('canvas-div');
 
+  background(bg);
+  env = new Environment(gridWidth, gridHeight);
   pos = createVector(pmouseX, pmouseY);
   console.log(env.grid);
   console.log(env.particleSet);
-  background(bg);
 }
 
 function draw() {
@@ -47,7 +48,7 @@ function click(){
   if (mouseIsPressed){
     pos.set(floor(pmouseX / pxSize), floor(pmouseY / pxSize));
     if (mouseButton === LEFT && pos.x > 0 && pos.y > 0 && pos.x < gridWidth - 1){
-      brush(pos.x, pos.y, env);
+    		brush(pos.x, pos.y, env);
     }
   }
 }
@@ -67,11 +68,16 @@ function  checkSelection(){
 
 function brush(x, y, env){
   for (let i = x - brushSize; i <= x + brushSize; i++){
-    for(let j = y - brushSize; j <= y + brushSize; j++){
-      if (env.grid[i][j] == false){
-        env.addParticle(new type[element](i, j, env));
-      }
+		if (env.grid[i][y] == false)
+			env.addParticle(new type[element](i, y, env));
+		else if (element == 'void' && env.grid[i][y] != false)
+			env.delParticle(env.grid[i][y]);
     }
   }
+
+
+function drawRect(x, y, color){
+	ctx.fillStyle = color;
+	ctx.fillRect(x * pxSize, y * pxSize, pxSize, pxSize);
 }
   // console.log(random() * (220 - 200) + 200)
