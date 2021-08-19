@@ -8,9 +8,9 @@ class Particle{
 		this.alive = 1;
 	}
 	
-	paint(){
-		drawRect(this.oldX, this.oldY, bg);
-		drawRect(this.x, this.y, this.color);
+	paint(oldColor, newColor){
+		drawRect(this.oldX, this.oldY, newColor);
+		drawRect(this.x, this.y, oldColor);
 	}
 
 	checkStatic(){
@@ -30,92 +30,108 @@ class Particle{
 		this.env.moveParticle(this, x, y)
 		this.x = x;
 		this.y = y;
-		this.paint();
+		this.paint(this.color, bg);
 	}
-
+	
 	checkIsEmpty(x, y){
 		if(this.env.grid[x][y] == false)
 			return true
 		else
 			return false
 	}
-	update(){
+
+	shuffle(array){
+		for (var i = array.length - 1; i > 0; i--) {
+			var j = Math.floor(Math.random() * (i + 1));
+			var temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
+		}
 	}
-}
-  
-class SandElement extends Particle{
-	constructor(x, y, env){
-		super(x, y, env);
-		this.color = randomizeColorRGBtoHex(225, 215, 130, 30)
-		this.horVel = 0;
-		this.verVel = 3;
+
+	swapValueRandom(array, src, dest){
+		if (Math.random() < 0.5)
+			[array[src], array[dest]] = [array[dest], array[src]]
 	}
 
 	update(){
-		if (this.alive == 1){
-			if (this.env.grid[this.x][this.y+1] == false){this.moveInGrid(this.x, this.y + 1)}
-			else if (this.env.grid[this.x][this.y+1] == WaterElement){this.moveInGrid(this.x, this.y + 1)}
-			else if(random() > 0.5){
-				if (this.env.grid[this.x-1][this.y+1] == false){this.moveInGrid(this.x - 1, this.y + 1)}
-				else if (this.env.grid[this.x+1][this.y+1] == false){this.moveInGrid(this.x + 1, this.y + 1)}
-			}
-			else{
-				if (this.env.grid[this.x+1][this.y+1] == false){this.moveInGrid(this.x + 1, this.y + 1)}
-				else if (this.env.grid[this.x-1][this.y+1] == false){this.moveInGrid(this.x - 1, this.y + 1)}
-			}
-		}
 	}
 }
   
-class WaterElement extends Particle{
+
+class MoveParticle extends Particle{
+	constructor(x, y, env){
+		super(x, y, env);
+	}
+	update(){
+		for (let i = 0; i < this.neighbourList.length; i++){
+			let xPos = this.neighbourList[i][0];
+			let yPos = this.neighbourList[i][1];
+			if (this.checkIsEmpty(this.x + xPos, this.y + yPos)){
+				this.moveInGrid(this.x + xPos, this.y + yPos);
+				break ;
+			}
+		}
+		super.update();
+	}
+}
+
+
+class SandElement extends MoveParticle{
+	constructor(x, y, env){
+		super(x, y, env);
+		this.color = randomizeColorRGBtoHex(240, 240, 160, 30)
+		this.neighbourList = [
+			[+0, +1],
+			[-1, +1],
+			[+1, +1],
+		]
+	}
+	update(){
+		this.swapValueRandom(this.neighbourList, 1, 2);
+		super.update();
+	}
+}
+
+class WaterElement extends MoveParticle{
 	constructor(x, y, env){
 		super(x, y, env);
 		this.color = randomizeColorRGBtoHex(210, 240, 250, 10)
+		this.neighbourList = [
+			[+0, +1],
+			[-1, +0],
+			[+1, +0]
+		]
 	}
-
 	update(){
-		if (this.alive == 1){
-			if (this.env.grid[this.x][this.y+1] == false){this.moveInGrid(this.x, this.y + 1)}
-			else if(random() > 0.5){
-				if (this.env.grid[this.x-1][this.y] == false){this.moveInGrid(this.x - 1, this.y)}
-				else if (this.env.grid[this.x+1][this.y] == false){this.moveInGrid(this.x + 1, this.y)}
-			}
-			else{
-				if (this.env.grid[this.x+1][this.y] == false){this.moveInGrid(this.x + 1, this.y)}
-				else if (this.env.grid[this.x-1][this.y] == false){this.moveInGrid(this.x - 1, this.y)}
-			}
-		}
+		this.swapValueRandom(this.neighbourList, 1, 2);
+		super.update();
 	}
 }
 
-class SteamElement extends Particle{
+class SteamElement extends MoveParticle{
 	constructor(x, y, env){
 		super(x, y, env);
 		this.color = randomizeColorRGBtoHex(210, 210, 210, 20)
+		this.neighbourList = [
+			[+0, -1],
+			[-1, +0],
+			[+1, +0]
+		]
 	}
-
 	update(){
-		if (this.alive == 1){
-			if (this.env.grid[this.x][this.y-1] == false){this.moveInGrid(this.x, this.y-1)}
-			else if(random() > 0.5){
-				if (this.env.grid[this.x-1][this.y] == false){this.moveInGrid(this.x - 1, this.y)}
-				else if (this.env.grid[this.x+1][this.y] == false){this.moveInGrid(this.x + 1, this.y)}
-			}
-			else{
-				if (this.env.grid[this.x+1][this.y] == false){this.moveInGrid(this.x + 1, this.y)}
-				else if (this.env.grid[this.x-1][this.y] == false){this.moveInGrid(this.x - 1, this.y)}
-			}
-		}
+		this.shuffle(this.neighbourList);
+		super.update();
 	}
 }
 
-class RockElement extends Particle{
+class StoneElement extends Particle{
 	constructor(x, y, env){
 		super(x, y, env);
 		this.color = randomizeColorRGBtoHex(120, 120, 120, 10)
+		drawRect(this.x, this.y, this.color);
 	}
 	update(){
-		this.paint(ctx)
 	}
 }
 

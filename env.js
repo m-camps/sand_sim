@@ -28,7 +28,14 @@ class Environment {
 		this.grid[newXPos][newYPos] = p;
 	}
 
+	swapParticle(oldP, newP){
+		let p = newP;
+		this.grid[oldP.x][oldP.y] = newP;
+		this.grid[p.x][p.y] = oldP;
+	}
+
 	delParticle(p){
+		drawRect(p.x,p.y, bg);
 		this.grid[p.x][p.y] = false;
 		this.particleSet.delete(p);
 	}
