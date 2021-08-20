@@ -7,3 +7,20 @@ html, body {
 canvas {
   display: block;
 }
+
+p {
+	display: inline-block;
+}
+
+div {
+	display: inline-block;
+}
+
+#posX , #posY{
+	background-color: lightsalmon;
+}
+
+#total{
+	background-color: lightblue;
+	width: 3em;
+}

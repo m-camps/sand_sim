@@ -1,8 +1,8 @@
 let pos = 0;
-let pxSize = 4;
 let gridWidth = 200;
 let gridHeight = 200;
-let bg = '#5a5f6b';
+let pxSize = 800 / gridWidth;
+let bg = '#4c5563';
 let env;
 let element;
 let brushSize = 10;
@@ -13,6 +13,7 @@ const type = {
   'water': WaterElement,
   'steam': SteamElement,
   'stone': StoneElement,
+  'dirt': DirtElement,
   'void': VoidElement,
 }
 
@@ -27,29 +28,32 @@ function setup() {
   // Link canvas to p5canvas
   p5canvas.parent('canvas-div');
 
-  background(bg);
-  env = new Environment(gridWidth, gridHeight);
+  resetGrid();
   pos = createVector(pmouseX, pmouseY);
-  console.log(env.grid);
-  console.log(env.particleSet);
 }
 
 function draw() {
   click();
-  for (let p of env.particleSet){
-    p.update();
-  }
-  for (let p of env.particleSet){
-    p.paint();
-  }
+  env.calcParticle();
+  env.paintParticle();
   checkSelection();
+}
+
+function resetGrid(){
+	background(bg);
+	env = new Environment(gridWidth, gridHeight);
+	console.log(env.grid);
+	console.log(env.particleSet);
 }
 
 function click(){
   if (mouseIsPressed){
     pos.set(floor(pmouseX / pxSize), floor(pmouseY / pxSize));
     if (mouseButton === LEFT && pos.x > 0 && pos.y > 0 && pos.x < gridWidth - 1){
-    	roundBrush(pos.x, pos.y, env);
+		if (brushChoice == false)
+    		roundBrush(pos.x, pos.y, env);
+		else
+    		rectBrush(pos.x, pos.y, env);
     }
   }
 }
@@ -63,17 +67,25 @@ function  randomizeColorRGBtoHex(r,g,b,diff){
 
 function  checkSelection(){
   element = document.getElementById("element").value;
+  brushChoice = boolean(document.getElementById("brushChoice").value);
+  brushSize = int(document.getElementById("brushSize").value);
   document.getElementById("framerate").innerHTML = floor(frameRate());
   document.getElementById("total").innerHTML = env.particleSet.size;
   document.getElementById("posX").innerHTML = pos.x;
   document.getElementById("posY").innerHTML = pos.y;
+  if (floor(frameRate()) < 45){
+	document.getElementById("framerate").style.backgroundColor="lightcoral";
+  }
+  else
+	document.getElementById("framerate").style.backgroundColor="lightgreen";
+  	
 }
 
-function brush(x, y, env){
+function rectBrush(x, y, env){
   	for (let i = x - brushSize; i <= x + brushSize; i++){
 		for (let j = y - brushSize; j <= y + brushSize; j++){
 			if (checkInBoundary(i, j)){
-				if (env.grid[i][j] == false)
+				if (env.grid[i][j] == false && random() < 0.1)
 					env.addParticle(new type[element](i, j, env));
 				else if (element == 'void' && env.grid[i][j] != false)
 					env.delParticle(env.grid[i][j]);
@@ -83,15 +95,14 @@ function brush(x, y, env){
 }
 
 function roundBrush(x, y, env){
-	// let r = brushSize;
-	for (let r = brushSize; r > 0; r--){
+	for (let r = brushSize; r >= 0; r--){
 		for (let i = -r; i <= r; i++){
 			for (let j = -r; j <= r; j++){
 				if (Math.round(Math.sqrt(i*i + j*j)) === r){
 					let xi = x + i;
 					let yj = y + j;
 					if (checkInBoundary(xi, yj)){
-						if (env.grid[xi][yj] == false)
+						if (env.grid[xi][yj] == false && random() < 0.1)
 							env.addParticle(new type[element](xi, yj, env));
 						else if (element == 'void' && env.grid[xi][yj] != false)
 							env.delParticle(env.grid[xi][yj]);
