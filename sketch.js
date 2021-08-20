@@ -1,11 +1,11 @@
 let pos = 0;
-let gridWidth = 400;
-let gridHeight = 400;
-let pxSize = 2;
+let pxSize = 4;
+let gridWidth = 200;
+let gridHeight = 200;
 let bg = '#5a5f6b';
 let env;
 let element;
-let brushSize = 3;
+let brushSize = 10;
 let ctx;
 
 const type = {
@@ -17,7 +17,6 @@ const type = {
 }
 
 function setup() {
-
   // Init p5.js canvas
   let p5canvas = createCanvas(gridWidth * pxSize, gridHeight * pxSize);
 
@@ -25,7 +24,7 @@ function setup() {
   let canvas = document.getElementById('defaultCanvas0');
   ctx = canvas.getContext('2d');
 
-  //Link canvas to p5canvas
+  // Link canvas to p5canvas
   p5canvas.parent('canvas-div');
 
   background(bg);
@@ -39,7 +38,9 @@ function draw() {
   click();
   for (let p of env.particleSet){
     p.update();
-    // p.checkStatic();
+  }
+  for (let p of env.particleSet){
+    p.paint();
   }
   checkSelection();
 }
@@ -48,7 +49,7 @@ function click(){
   if (mouseIsPressed){
     pos.set(floor(pmouseX / pxSize), floor(pmouseY / pxSize));
     if (mouseButton === LEFT && pos.x > 0 && pos.y > 0 && pos.x < gridWidth - 1){
-    		brush(pos.x, pos.y, env);
+    	roundBrush(pos.x, pos.y, env);
     }
   }
 }
@@ -69,19 +70,47 @@ function  checkSelection(){
 }
 
 function brush(x, y, env){
-  for (let i = x - brushSize; i <= x + brushSize; i++){
-    for (let j = y - brushSize; j <= y + brushSize; j++){
-      if (env.grid[i][j] == false)
-        env.addParticle(new type[element](i, j, env));
-      else if (element == 'void' && env.grid[i][j] != false)
-        env.delParticle(env.grid[i][j]);
-      }
-    }
-  }
+  	for (let i = x - brushSize; i <= x + brushSize; i++){
+		for (let j = y - brushSize; j <= y + brushSize; j++){
+			if (checkInBoundary(i, j)){
+				if (env.grid[i][j] == false)
+					env.addParticle(new type[element](i, j, env));
+				else if (element == 'void' && env.grid[i][j] != false)
+					env.delParticle(env.grid[i][j]);
+			}
+    	}
+	}
+}
+
+function roundBrush(x, y, env){
+	// let r = brushSize;
+	for (let r = brushSize; r > 0; r--){
+		for (let i = -r; i <= r; i++){
+			for (let j = -r; j <= r; j++){
+				if (Math.round(Math.sqrt(i*i + j*j)) === r){
+					let xi = x + i;
+					let yj = y + j;
+					if (checkInBoundary(xi, yj)){
+						if (env.grid[xi][yj] == false)
+							env.addParticle(new type[element](xi, yj, env));
+						// else if (element == 'void' && env.grid[xi][yj] != false)
+						// 	env.delParticle(env.grid[xi][yj]);
+					}
+				}
+			}
+		}
+	}
+}
 
 
 function drawRect(x, y, color){
 	ctx.fillStyle = color;
 	ctx.fillRect(x * pxSize, y * pxSize, pxSize, pxSize);
+}
+
+function checkInBoundary(x, y){
+	if (y > 0  && y < env.gridHeight - 1 && x > 0 && x < env.gridWidth - 1)
+		return true;
+	return false;
 }
   // console.log(random() * (220 - 200) + 200)
