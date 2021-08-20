@@ -3,12 +3,20 @@ I started this project to get to know [p5.js](https://p5js.org/) and javascript 
 ## To do list
 
 - [ ] More elements
+	- [X] Sand
+	- [X] Water
+	- [X] Steam
+	- [X] Dirt
+	- [X] Stone
+	- [ ] Wood
 	- [ ] Lava
 	- [ ] Fire
 	- [ ] Oil
 	- [ ] Gas
 	- [ ] Gunpowder
 	- [ ] Plants & Seeds
+- [X] Weight mechanic
+- [X] Static/alive system (Optimization)
 - [ ] Burning mechanic
 - [ ] Faster liquid displacement
 - [ ] Gravity
