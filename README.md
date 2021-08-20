@@ -1,6 +1,6 @@
 # Sand Simulation
 I started this project to get to know [p5.js](https://p5js.org/) and javascript and to get more of a feel for object oriented programming.
-## To do list
+## Features
 
 - [ ] More elements
 	- [X] Sand
