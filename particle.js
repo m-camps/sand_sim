@@ -7,9 +7,12 @@ class Particle{
 		this.env = env;
 	}
 	
-	paint(oldColor, newColor){
-		drawRect(this.oldX, this.oldY, newColor);
-		drawRect(this.x, this.y, oldColor);
+	paint(){
+		if (this.changed == true){
+			drawRect(this.oldX, this.oldY, bg);
+			drawRect(this.x, this.y, this.color);
+			this.changed = false;
+		}
 	}
 
 	moveInGrid(x, y){
@@ -18,7 +21,7 @@ class Particle{
 		this.env.moveParticle(this, x, y)
 		this.x = x;
 		this.y = y;
-		this.paint(this.color, bg);
+		this.changed = true
 	}
 	
 	checkIsEmpty(x, y){
@@ -40,16 +43,10 @@ class Particle{
 		for (let i = 0; i < this.neighbourList.length; i ++){
 			let x = neighbourList[i][0];
 			let y = neighbourList[i][1];
-			if (this.env.grid[this.x + x][this.y + y].isStatic == true){
-				this.env.grid[this.x + x][this.y + y].isStatic = false;
+			if (this.env.grid[this.x + x][this.y - y].isStatic == true){
+				this.env.grid[this.x + x][this.y - y].isStatic = false;
 			}
 		}
-		
-		// for (let i = x - 1; i <= x + 1; i++){
-		// 	if (this.env.grid[i][y - 1].isStatic == true){
-		// 		this.env.grid[i][y - 1].isStatic = false;
-		// 	}
-		// }
 	}
 
 	shuffle(array){
@@ -75,9 +72,10 @@ class MoveParticle extends Particle{
 	constructor(x, y, env){
 		super(x, y, env);
 		this.isStatic = false;
+		this.changed = false
 	}
 	update(){
-		if (!this.isStatic){
+		if (!this.isStatic && !this.changed){
 			this.isStatic = this.checkIsStatic(this.x, this.y);
 			this.updateNeighbours(this.neighbourList);
 			for (let i = 0; i < this.neighbourList.length; i++){

@@ -1,11 +1,11 @@
 let pos = 0;
-let pxSize = 6;
-let gridWidth = 100;
-let gridHeight = 100;
+let pxSize = 4;
+let gridWidth = 200;
+let gridHeight = 200;
 let bg = '#5a5f6b';
 let env;
 let element;
-let brushSize = 4;
+let brushSize = 10;
 let ctx;
 
 const type = {
@@ -38,6 +38,9 @@ function draw() {
   click();
   for (let p of env.particleSet){
     p.update();
+  }
+  for (let p of env.particleSet){
+    p.paint();
   }
   checkSelection();
 }
@@ -84,7 +87,7 @@ function roundBrush(x, y, env){
 	for (let r = brushSize; r > 0; r--){
 		for (let i = -r; i <= r; i++){
 			for (let j = -r; j <= r; j++){
-				if (Math.round(Math.sqrt(i*i + j*j)) === brushSize){
+				if (Math.round(Math.sqrt(i*i + j*j)) === r){
 					let xi = x + i;
 					let yj = y + j;
 					if (checkInBoundary(xi, yj)){
