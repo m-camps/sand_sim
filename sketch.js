@@ -84,13 +84,4 @@ function drawRect(x, y, color){
 	ctx.fillStyle = color;
 	ctx.fillRect(x * pxSize, y * pxSize, pxSize, pxSize);
 }
-
-function shuffle(array){
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-}
   // console.log(random() * (220 - 200) + 200)
