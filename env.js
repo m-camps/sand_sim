@@ -3,9 +3,9 @@ class Environment {
 		this.gridWidth = gridWidth;
 		this.gridHeight = gridHeight;
 		this.particleSet = new Set();
-		this.resetGrid();
+		this.makeGrid();
 	}
-	resetGrid(){
+	makeGrid(){
 		this.grid = [];
 		for (let x = 0; x < this.gridWidth; x++){
 			this.grid[x] = [];
@@ -18,6 +18,7 @@ class Environment {
 			}
 		}
 	}
+	
 	addParticle(p){
 		this.grid[p.x][p.y] = p;
 		this.particleSet.add(p); 
@@ -35,8 +36,19 @@ class Environment {
 	}
 
 	delParticle(p){
-		drawRect(p.x,p.y, bg);
+		drawRect(p.x, p.y, bg);
+		p.updateNeighbours(p.neighbourList);
 		this.grid[p.x][p.y] = false;
 		this.particleSet.delete(p);
+	}
+
+	calcParticle(){
+		for (let p of this.particleSet)
+			p.update();
+	}
+
+	paintParticle(){
+		for (let p of this.particleSet)
+			p.paint();
 	}
 }

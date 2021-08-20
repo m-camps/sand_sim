@@ -8,18 +8,27 @@
     <script src="env.js"></script>
     <script src="particle.js"></script>
     <script src="sketch.js"></script>
-    <p>Element</p>
-		<select id="element">
-		  <option value="sand">Sand</option>
-		  <option value="stone">Stone</option>
-      <option value="water">Water</option>
-      <option value="steam">Steam</option>
-      <option value="void">Void</option>
-		</select>
-    <p id="framerate">hey</p>
-    <p id="total"></p>
-    <p id="posX">hey</p>
-    <p id="posY"></p>
+	<select id="element">
+		<option value="sand">Sand</option>
+		<option value="stone">Stone</option>
+		<option value="water">Water</option>
+		<option value="steam">Steam</option>
+		<option value="void">Void</option>
+	</select>
+	<select id="brushChoice">
+		<option value="false">Round</option>
+		<option value="true">Rectangle</option>
+	</select>
+	<select id="brushSize">
+		<option value="1">1</option>
+		<option value="3">3</option>
+		<option value="5">5</option>
+		<option value="10">10</option>
+	</select>
+    <p>FPS:</p><p id="framerate">hey</p>
+    <p>Total Particles:</p><p id="total"></p>
+    <p>(X, Y) = </p><p>(</p><p id="posX"></p><p>,</p><p id="posY"></p><p>)</p>
+	<button onclick="resetGrid()">Clear</button>
     <div id="canvas-div"></div>
   </body>
 </html>

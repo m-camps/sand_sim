@@ -5,6 +5,11 @@ class Particle{
 		this.oldX = x;
 		this.oldY = y;
 		this.env = env;
+		this.neighbourList = [
+			[+0, -1],
+			[-1, +0],
+			[+1, +0]
+		]
 	}
 	
 	paint(){
@@ -165,5 +170,8 @@ class VoidElement extends Particle{
 	constructor(x, y, env){
 		super(x, y, env);
 		this.color = bg;
+	}
+	update(){
+		this.env.delParticle(this);
 	}
 }
