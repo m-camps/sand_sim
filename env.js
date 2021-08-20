@@ -29,10 +29,13 @@ class Environment {
 		this.grid[newXPos][newYPos] = p;
 	}
 
-	swapParticle(oldP, newP){
-		let p = newP;
+	swapParticle(oldP, newP, x, y){
 		this.grid[oldP.x][oldP.y] = newP;
-		this.grid[p.x][p.y] = oldP;
+		this.grid[x][y] = oldP;
+		newP.x = oldP.oldX;
+		newP.y = oldP.oldY;
+		oldP.isStatic = false;
+		newP.isStatic = false;
 	}
 
 	delParticle(p){

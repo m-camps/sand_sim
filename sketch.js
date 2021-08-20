@@ -1,8 +1,8 @@
 let pos = 0;
-let pxSize = 4;
 let gridWidth = 100;
 let gridHeight = 100;
-let bg = '#5a5f6b';
+let pxSize = 800 / gridWidth;
+let bg = '#4c5563';
 let env;
 let element;
 let brushSize = 10;
@@ -13,6 +13,7 @@ const type = {
   'water': WaterElement,
   'steam': SteamElement,
   'stone': StoneElement,
+  'dirt': DirtElement,
   'void': VoidElement,
 }
 
@@ -84,7 +85,7 @@ function rectBrush(x, y, env){
   	for (let i = x - brushSize; i <= x + brushSize; i++){
 		for (let j = y - brushSize; j <= y + brushSize; j++){
 			if (checkInBoundary(i, j)){
-				if (env.grid[i][j] == false)
+				if (env.grid[i][j] == false && random() < 0.1)
 					env.addParticle(new type[element](i, j, env));
 				else if (element == 'void' && env.grid[i][j] != false)
 					env.delParticle(env.grid[i][j]);
@@ -101,7 +102,7 @@ function roundBrush(x, y, env){
 					let xi = x + i;
 					let yj = y + j;
 					if (checkInBoundary(xi, yj)){
-						if (env.grid[xi][yj] == false)
+						if (env.grid[xi][yj] == false && random() < 0.1)
 							env.addParticle(new type[element](xi, yj, env));
 						else if (element == 'void' && env.grid[xi][yj] != false)
 							env.delParticle(env.grid[xi][yj]);
