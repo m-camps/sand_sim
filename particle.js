@@ -5,8 +5,9 @@ class Particle{
 		this.oldX = x;
 		this.oldY = y;
 		this.env = env;
+		// Default neighbourList for deleting particles and activating static ones
 		this.neighbourList = [
-			[+0, -1],
+			[+0, +1],
 			[-1, +0],
 			[+1, +0]
 		]
@@ -231,6 +232,6 @@ class VoidElement extends Particle{
 		this.color = bg;
 	}
 	update(){
-		this.env.delParticle(this);
+		this.env.delParticle(this)
 	}
 }
