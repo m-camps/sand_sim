@@ -36,6 +36,7 @@ class Environment {
 
 	delParticle(p){
 		drawRect(p.x,p.y, bg);
+		p.updateNeighbours(p.neighbourList);
 		this.grid[p.x][p.y] = false;
 		this.particleSet.delete(p);
 	}

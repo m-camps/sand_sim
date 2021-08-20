@@ -93,8 +93,8 @@ function roundBrush(x, y, env){
 					if (checkInBoundary(xi, yj)){
 						if (env.grid[xi][yj] == false)
 							env.addParticle(new type[element](xi, yj, env));
-						// else if (element == 'void' && env.grid[xi][yj] != false)
-						// 	env.delParticle(env.grid[xi][yj]);
+						else if (element == 'void' && env.grid[xi][yj] != false)
+							env.delParticle(env.grid[xi][yj]);
 					}
 				}
 			}
