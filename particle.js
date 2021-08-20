@@ -56,16 +56,19 @@ class Particle{
 			return false;
 	}
 
-	checkIsStatic(x, y){
-		for (let i = x - 1; i <= x + 1; i++){
-			if (this.env.grid[i][y + 1] == false)
+	checkIsStatic(neighbourList){
+		for (let i = 0; i < this.neighbourList.length; i++){
+			let x = neighbourList[i][0];
+			let y = neighbourList[i][1];
+			if (this.env.grid[this.x + x][this.y + y] == false){
 				return false;
+			}
 		}
 		return true;
 	}
 
 	updateNeighbours(neighbourList){
-		for (let i = 0; i < this.neighbourList.length; i ++){
+		for (let i = 0; i < this.neighbourList.length; i++){
 			let x = neighbourList[i][0];
 			let y = neighbourList[i][1];
 			if (this.env.grid[this.x + x][this.y - y].isStatic == true){
@@ -101,8 +104,8 @@ class MoveParticle extends Particle{
 	}
 	update(){
 		if (!this.isStatic && !this.changed){
-			// this.isStatic = this.checkIsStatic(this.x, this.y);
-			// this.updateNeighbours(this.neighbourList);
+			this.isStatic = this.checkIsStatic(this.neighbourList);
+			if (!this.isStatic){this.updateNeighbours(this.neighbourList);}
 			for (let i = 0; i < this.neighbourList.length; i++){
 				let xPos = this.neighbourList[i][0];
 				let yPos = this.neighbourList[i][1];
@@ -161,13 +164,18 @@ class WaterElement extends MoveParticle{
 		this.neighbourList = [
 			[+0, +1],
 			[-1, +0],
-			[+1, +0],
-			[+1, +1],
-			[-1, +1]
+			[+1, +0]
 		]
 	}
 	update(){
+		this.neighbourList = [
+			[+0, +1],
+			[-1, +0],
+			[+1, +0]
+		]
 		this.swapValueRandom(this.neighbourList, 1, 2);
+		if (random() < 0.1)
+			this.swapValueRandom(this.neighbourList, 0, 1);
 		super.update();
 	}
 }
@@ -184,7 +192,14 @@ class SteamElement extends MoveParticle{
 		]
 	}
 	update(){
-		this.shuffle(this.neighbourList);
+		this.neighbourList = [
+			[+0, -1],
+			[-1, +0],
+			[+1, +0]
+		]
+		this.swapValueRandom(this.neighbourList, 1, 2);
+		if (random() < 0.8)
+			this.swapValueRandom(this.neighbourList, 0, 1);
 		super.update();
 	}
 }

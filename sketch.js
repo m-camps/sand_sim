@@ -1,6 +1,6 @@
 let pos = 0;
-let gridWidth = 100;
-let gridHeight = 100;
+let gridWidth = 200;
+let gridHeight = 200;
 let pxSize = 800 / gridWidth;
 let bg = '#4c5563';
 let env;
