@@ -5,7 +5,6 @@ class Particle{
 		this.oldX = x;
 		this.oldY = y;
 		this.env = env;
-		this.alive = 1;
 	}
 	
 	paint(oldColor, newColor){
@@ -13,17 +12,6 @@ class Particle{
 		drawRect(this.x, this.y, oldColor);
 	}
 
-	checkStatic(){
-		if (this.alive == 1){
-			for (let i = this.x - 1; i <= this.x + 1; i++){
-				for (let j = this.y - 1; j <= this.y + 1; j++){
-				if (env.grid[i][j] == false)
-					return ;
-				}
-			}
-		}
-		this.alive = 0;
-	}
 	moveInGrid(x, y){
 		this.oldX = this.x;
 		this.oldY = this.y;
@@ -38,6 +26,30 @@ class Particle{
 			return true
 		else
 			return false
+	}
+
+	checkIsStatic(x, y){
+		for (let i = x - 1; i <= x + 1; i++){
+			if (this.env.grid[i][y + 1] == false)
+				return false;
+		}
+		return true;
+	}
+
+	updateNeighbours(neighbourList){
+		for (let i = 0; i < this.neighbourList.length; i ++){
+			let x = neighbourList[i][0];
+			let y = neighbourList[i][1];
+			if (this.env.grid[this.x + x][this.y + y].isStatic == true){
+				this.env.grid[this.x + x][this.y + y].isStatic = false;
+			}
+		}
+		
+		// for (let i = x - 1; i <= x + 1; i++){
+		// 	if (this.env.grid[i][y - 1].isStatic == true){
+		// 		this.env.grid[i][y - 1].isStatic = false;
+		// 	}
+		// }
 	}
 
 	shuffle(array){
@@ -62,17 +74,22 @@ class Particle{
 class MoveParticle extends Particle{
 	constructor(x, y, env){
 		super(x, y, env);
+		this.isStatic = false;
 	}
 	update(){
-		for (let i = 0; i < this.neighbourList.length; i++){
-			let xPos = this.neighbourList[i][0];
-			let yPos = this.neighbourList[i][1];
-			if (this.checkIsEmpty(this.x + xPos, this.y + yPos)){
-				this.moveInGrid(this.x + xPos, this.y + yPos);
-				break ;
+		if (!this.isStatic){
+			this.isStatic = this.checkIsStatic(this.x, this.y);
+			this.updateNeighbours(this.neighbourList);
+			for (let i = 0; i < this.neighbourList.length; i++){
+				let xPos = this.neighbourList[i][0];
+				let yPos = this.neighbourList[i][1];
+				if (this.checkIsEmpty(this.x + xPos, this.y + yPos)){
+					this.moveInGrid(this.x + xPos, this.y + yPos);
+					break ;
+				}
 			}
+			super.update();
 		}
-		super.update();
 	}
 }
 
@@ -84,11 +101,11 @@ class SandElement extends MoveParticle{
 		this.neighbourList = [
 			[+0, +1],
 			[-1, +1],
-			[+1, +1],
+			[+1, +1]
 		]
 	}
 	update(){
-		this.swapValueRandom(this.neighbourList, 1, 2);
+		// this.swapValueRandom(this.neighbourList, 1, 2);
 		super.update();
 	}
 }
@@ -100,7 +117,9 @@ class WaterElement extends MoveParticle{
 		this.neighbourList = [
 			[+0, +1],
 			[-1, +0],
-			[+1, +0]
+			[+1, +0],
+			[+1, +1],
+			[-1, +1]
 		]
 	}
 	update(){
@@ -139,7 +158,8 @@ class StaticElement extends Particle{
 	constructor(x, y, env){
 		super(x, y, env);
 		this.color = '#282828';
-		this.alive = 0;
+	}
+	update(){
 	}
 }
 
@@ -147,6 +167,5 @@ class VoidElement extends Particle{
 	constructor(x, y, env){
 		super(x, y, env);
 		this.color = bg;
-		this.alive = 0;
 	}
 }
