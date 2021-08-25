@@ -24,3 +24,7 @@ div {
 	background-color: lightblue;
 	width: 3em;
 }
+
+#gridWidth, #gridHeight{
+  width: 50px;
+}

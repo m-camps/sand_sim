@@ -1,21 +1,9 @@
-let pos = 0;
-let gridWidth = 200;
-let gridHeight = 200;
+let pos;
+let gridWidth = 100;
+let gridHeight = 100;
 let pxSize = 800 / gridWidth;
-let bg = '#4c5563';
 let env;
-let element;
-let brushSize = 10;
 let ctx;
-
-const type = {
-  'sand': SandElement,
-  'water': WaterElement,
-  'steam': SteamElement,
-  'stone': StoneElement,
-  'dirt': DirtElement,
-  'void': VoidElement,
-}
 
 function setup() {
   // Init p5.js canvas
@@ -37,13 +25,26 @@ function draw() {
   env.calcParticle();
   env.paintParticle();
   checkSelection();
+//   console.log(getParentName() == "particle");
 }
 
 function resetGrid(){
-	background(bg);
+	pxSize = 800 / gridWidth
+	resizeCanvas(gridWidth * pxSize, gridHeight * pxSize);
+	background(BACKGROUND_COLOR);
 	env = new Environment(gridWidth, gridHeight);
 	console.log(env.grid);
 	console.log(env.particleSet);
+
+}
+
+function getParentName(env){
+	let p = new TYPE[element](1,1,env);
+	let parentName = Object.getPrototypeOf(p);
+	parentName = Object.getPrototypeOf(parentName);
+	parentName = parentName.constructor.name;
+	env.delParticle(p);
+	return parentName;
 }
 
 function click(){
@@ -65,10 +66,23 @@ function  randomizeColorRGBtoHex(r,g,b,diff){
   return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
+function  randomizeColorRGBtoHexNew(c){
+	let r = c[0];
+	let g = c[1];
+	let b = c[2];
+	let diff = c[3];
+	r = floor(random() * (r - (r - diff)) + r - diff);
+	g = floor(random() * (g - (g - diff)) + g - diff);
+	b = floor(random() * (b - (b - diff)) + b - diff);
+	return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+  }
+
 function  checkSelection(){
   element = document.getElementById("element").value;
   brushChoice = boolean(document.getElementById("brushChoice").value);
   brushSize = int(document.getElementById("brushSize").value);
+  gridWidth = int(document.getElementById("gridWidth").value);
+  gridHeight = int(document.getElementById("gridHeight").value);
   document.getElementById("framerate").innerHTML = floor(frameRate());
   document.getElementById("total").innerHTML = env.particleSet.size;
   document.getElementById("posX").innerHTML = pos.x;
@@ -78,15 +92,14 @@ function  checkSelection(){
   }
   else
 	document.getElementById("framerate").style.backgroundColor="lightgreen";
-  	
 }
 
 function rectBrush(x, y, env){
   	for (let i = x - brushSize; i <= x + brushSize; i++){
 		for (let j = y - brushSize; j <= y + brushSize; j++){
 			if (checkInBoundary(i, j)){
-				if (env.grid[i][j] == false && random() < 0.1)
-					env.addParticle(new type[element](i, j, env));
+				if (env.grid[i][j] == false && random() < SPAWN_RATE)
+					env.addParticle(new TYPE[element](i, j, env));
 				else if (element == 'void' && env.grid[i][j] != false)
 					env.delParticle(env.grid[i][j]);
 			}
@@ -102,8 +115,11 @@ function roundBrush(x, y, env){
 					let xi = x + i;
 					let yj = y + j;
 					if (checkInBoundary(xi, yj)){
-						if (env.grid[xi][yj] == false && random() < 0.1)
-							env.addParticle(new type[element](xi, yj, env));
+						let spawn = SPAWN_RATE
+						if (getParentName(env) == "Particle")
+							spawn = 1;
+						if (env.grid[xi][yj] == false && random() < spawn)
+							env.addParticle(new TYPE[element](xi, yj, env));
 						else if (element == 'void' && env.grid[xi][yj] != false)
 							env.delParticle(env.grid[xi][yj]);
 					}
@@ -112,7 +128,6 @@ function roundBrush(x, y, env){
 		}
 	}
 }
-
 
 function drawRect(x, y, color){
 	ctx.fillStyle = color;
@@ -124,4 +139,3 @@ function checkInBoundary(x, y){
 		return true;
 	return false;
 }
-  // console.log(random() * (220 - 200) + 200)

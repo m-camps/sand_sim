@@ -38,8 +38,15 @@ class Environment {
 		newP.isStatic = false;
 	}
 
+	replaceParticle(p, oldP){
+		let x = oldP.x;
+		let y = oldP.y
+		let env = this;
+		this.delParticle(oldP);
+		this.addParticle(new TYPE[p](x, y, env));
+	}
 	delParticle(p){
-		drawRect(p.x, p.y, bg);
+		drawRect(p.x, p.y, BACKGROUND_COLOR);
 		p.updateNeighbours(p.neighbourList);
 		this.grid[p.x][p.y] = false;
 		this.particleSet.delete(p);
