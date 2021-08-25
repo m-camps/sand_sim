@@ -14,8 +14,9 @@ I started this project to get to know [p5.js](https://p5js.org/) and javascript 
 	- [X] Oil
 	- [X] Gas
 	- [X] Gunpowder
-	- [ ] Plants & Seeds
 	- [X] Acid
+	- [X] Ice
+	- [ ] Plants & Seeds
 - [X] Weight mechanic
 - [X] Static/alive system (Optimization)
 - [X] Burning mechanic

@@ -21,7 +21,7 @@ const GUNPOWDER_FLAMMABILITY = 0.2;
 const GUNPOWDER_BURNTIME = 10;
 
 // Water Element
-const WATER_COLOR = [210, 240, 250, 10];
+const WATER_COLOR = [131, 215, 238, 20];
 const WATER_WEIGHT = 0;
 const WATER_NEIGHBOURS = [[+0, +1],[-1, +0],[+1, +0]];
 
@@ -63,10 +63,15 @@ const FIRE_LIFETIME = 4;
 const STONE_COLOR = [120, 120, 120, 10];
 const STONE_WEIGHT = 10;
 
+// Ice ELement
+const ICE_COLOR = [210, 240, 250, 10];
+const ICE_WEIGHT = 10;
+const ICE_NEIGHBOURS = [[+0, +1],[+0, -1],[-1, +0],[+1, +0],[+1, -1],[-1, -1],[-1, +1],[+1, +1]];
+
 // Burning Element
 const BURNING_COLOR = [240, 100, 50, 20];
 const BURNING_WEIGHT = 10;
-const BURNING_NEIGHBOURS = [[+0, +1],[+0, -1],[-1, +0],[+1, +0],[+1, -1],[-1, -1],[-1, +1],[+1, +1]]
+const BURNING_NEIGHBOURS = [[+0, +1],[+0, -1],[-1, +0],[+1, +0],[+1, -1],[-1, -1],[-1, +1],[+1, +1]];
 
 // Wood Element
 const WOOD_COLOR = [186, 140, 99, 10];
@@ -87,6 +92,7 @@ const TYPE = {
     'steam': SteamElement,
     'fire': FireElement,
     'stone': StoneElement,
+    'ice': IceElement,
     'wood': WoodElement,
     'dirt': DirtElement,
     'burning': BurningElement,

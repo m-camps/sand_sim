@@ -404,6 +404,32 @@ class	StoneElement extends Particle{
 	update(){
 	}
 }
+class	IceElement extends Particle{
+	constructor(x, y, env){
+		super(x, y, env);
+		this.color = randomizeColorRGBtoHexNew(ICE_COLOR);
+		this.weight = ICE_WEIGHT;
+		this.neighbourList = ICE_NEIGHBOURS;
+		drawRect(this.x, this.y, this.color);
+	}
+	replaceWater(){
+		for (let i = this.x - 1; i <= this.x + 1; i++){
+			for (let j = this.y - 1; j <= this.y + 1; j++){
+				let p = this.env.grid[i][j];
+				if (p.constructor.name === 'WaterElement' && random() < 0.005){
+					console.log(p.constructor.name);
+					this.env.replaceParticle('ice', p);
+				}
+			}
+		}
+	}	
+	update(){
+		if (!this.isStatic)
+			this.replaceWater();
+		this.isStatic = this.checkIsStatic(this.neighbourList);
+		super.update();
+	}
+}
 class	WoodElement extends Particle{
 	constructor(x, y, env){
 		super(x, y, env);
