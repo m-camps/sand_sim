@@ -2,7 +2,7 @@
 I started this project to get to know [p5.js](https://p5js.org/) and javascript and to get more of a feel for object oriented programming.
 ## Features
 
-- [ ] More elements
+- [ ] Elements
 	- [X] Sand
 	- [X] Water
 	- [X] Steam
@@ -25,6 +25,7 @@ I started this project to get to know [p5.js](https://p5js.org/) and javascript 
 - [ ] Gravity
 - [ ] Friction
 - [ ] Smooth mouse update
+- [ ] UI
 ---
  **Inspiration:**
 

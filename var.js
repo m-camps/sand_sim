@@ -26,7 +26,7 @@ const WATER_WEIGHT = 0;
 const WATER_NEIGHBOURS = [[+0, +1],[-1, +0],[+1, +0]];
 
 // Lava Element
-const LAVA_COLOR = [226, 88, 34, 10];
+const LAVA_COLOR = [242, 113, 39, 10];
 const LAVA_WEIGHT = 0;
 const LAVA_NEIGHBOURS = [[+0, +1],[-1, +0],[+1, +0]];
 
@@ -54,7 +54,7 @@ const GAS_FLAMMABILITY = 1;
 const GAS_BURNTIME = 5;
 
 // Fire Element
-const FIRE_COLOR = [226, 88, 34, 20];
+const FIRE_COLOR = [242, 113, 39, 20];
 const FIRE_WEIGHT = -11;
 const FIRE_NEIGHBOURS = [[+0, -1],[-1, +0],[+1, +0]];
 const FIRE_LIFETIME = 4;

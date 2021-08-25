@@ -1,7 +1,7 @@
 let pos;
 let gridWidth = 100;
 let gridHeight = 100;
-let pxSize = 800 / gridWidth;
+let pxSize = 800 / gridHeight;
 let env;
 let ctx;
 
@@ -29,7 +29,7 @@ function draw() {
 }
 
 function resetGrid(){
-	pxSize = 800 / gridWidth
+	pxSize = 800 / gridHeight;
 	resizeCanvas(gridWidth * pxSize, gridHeight * pxSize);
 	background(BACKGROUND_COLOR);
 	env = new Environment(gridWidth, gridHeight);
