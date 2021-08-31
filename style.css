@@ -1,23 +1,44 @@
-html, body {
-  margin-left: auto;
-  margin-right: auto;
-  width: 800px;
-  padding: 0;
-}
-canvas {
-  display: block;
+@import url('https://fonts.googleapis.com/css2?family=Metrophobic&display=swap');
+
+:root{
+	--sand-color: yellow;
+	--stone-color: gray;
+	--wood-color: brown;
+	--water-color: blue;
+	--steam-color: lightgray;
+	--fire-color: red;
+	--dirt-color: brown;
+	--oil-color: darkgrey;
+	--gas-color: purple;
+	--acid-color: green;
+	--gunpowder-color: black;
+	--lava-color: red;
+	--ice-color: lightblue;
 }
 
-p {
-	display: inline-block;
+html, body {
+	font-family: 'Metrophobic', sans-serif;
+    font-size: 16px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 800px;
+	padding: 0;
+}
+
+canvas {
+  display: flex;
 }
 
 div {
-	display: inline-block;
+	display: inline-flex;
 }
 
 #posX , #posY{
 	background-color: lightsalmon;
+}
+
+#framerate, #posX, #posY{
+	width: 25px;
 }
 
 #total{
@@ -25,6 +46,164 @@ div {
 	width: 3em;
 }
 
-#gridWidth, #gridHeight{
+p {
+	margin:2px;
+}
+
+#gridWidth, #gridHeight, #reset-button{
   width: 50px;
+  font-size: 24px;
+  font-family: 'Metrophobic', sans-serif;
+  text-align: center;
+}
+
+.reset-button{
+	padding-left: 50px;
+}
+
+#reset-button{
+	width:100px;
+}
+.radio-button, .brush-select, .brush-size{
+	display: inline-flex;
+}
+
+.radio-button{
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.brush-size{
+	padding-left: 50px;
+}
+.radio-button input[type="radio"], .brush-select input[type="radio"], .brush-size input[type="radio"]{
+	opacity: 0;
+	position: fixed;
+	width: 0;
+}
+
+.radio-button label, .brush-select label, .brush-size label{
+	display: inline-block;
+	background-color: #ddd;
+	padding: 2px 6px;
+    border: 1px solid #444;
+    border-radius: 5px;
+	user-select: none; 
+	margin: 2px;
+}
+
+.brush-select label, .brush-size label{
+	width: 50px;
+	height: 50px;
+	padding: 1px;
+	margin: 2px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: hsl(0, 0%, 90%);
+}
+
+.radio-button input[type="radio"]:checked + label {
+	font-weight: bolder;
+	background-color: hsl(240, 10%, 40%);;
+	box-shadow: 1px 1px 5px black;
+}
+
+.brush-select input[type="radio"]:checked + label, .brush-size input[type="radio"]:checked + label{
+	background-color: hsl(240, 10%, 40%);
+	box-shadow: 1px 1px 5px black;
+}
+
+#rect-span, #round-span, #size-1-span, #size-3-span, #size-5-span, #size-10-span{
+	width: 30px;
+	height: 30px;
+    border: 2px solid black;
+}
+
+#round-span{
+	border-radius: 100%;
+}
+
+#size-1{
+	padding-left:20px;
+}
+
+#size-1-span {
+	width: 10%;
+	height: 10%;
+}
+
+#size-3-span {
+	width: 20%;
+	height: 20%;
+}
+
+#size-5-span {
+	width: 45%;
+	height: 45%;
+}
+
+#size-10-span {
+	width: 60%;
+	height: 60%;
+}
+
+#gunpowder-label, #dirt-label, #oil-label, #stone-label{
+	color:white;
+}
+
+.radio-button input[type="radio"]:hover + label {
+	box-shadow: 1px 1px 5px;
+}
+
+#sand-label{
+	background-color: var(--sand-color);
+}
+
+#stone-label{
+	background-color: var(--stone-color);
+}
+
+#wood-label{
+	background-color: var(--wood-color);
+}
+
+#water-label{
+	background-color: var(--water-color);
+}
+
+#steam-label{
+	background-color: var(--steam-color);
+}
+
+#fire-label{
+	background-color: var(--fire-color);
+}
+
+#dirt-label{
+	background-color: var(--dirt-color);
+}
+
+#oil-label{
+	background-color: var(--oil-color);
+}
+
+#gas-label{
+	background-color: var(--gas-color);
+}
+
+#acid-label{
+	background-color: var(--acid-color);
+}
+
+#gunpowder-label{
+	background-color: var(--gunpowder-color);
+}
+
+#lava-label{
+	background-color: var(--lava-color);
+}
+
+#ice-label{
+	background-color: var(--ice-color);
 }

@@ -26,6 +26,11 @@ I started this project to get to know [p5.js](https://p5js.org/) and javascript 
 - [ ] Friction
 - [ ] Smooth mouse update
 - [ ] UI
+	-[ ] Custom cursor
+	-[ ] Color palette
+	-[ ] Buttons
+	-[ ] Size images
+	-[ ] Change color values from rgb to hsl for better randomization
 ---
  **Inspiration:**
 

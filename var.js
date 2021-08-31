@@ -5,6 +5,7 @@ const ELEMENT_NEIGHBOURS = [[+0, +1],[-1, +0],[+1, +0]]; // Neighbours the eleme
 
 // Sand Element
 const SAND_COLOR = [240, 240, 160, 30];
+const SAND_RANDOMNESS = 10;
 const SAND_WEIGHT = 1;
 const SAND_NEIGHBOURS = [[+0, +1],[-1, +1],[+1, +1]];
 

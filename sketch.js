@@ -18,6 +18,7 @@ function setup() {
 
   resetGrid();
   pos = createVector(pmouseX, pmouseY);
+  setupUI();
 }
 
 function draw() {
@@ -51,7 +52,7 @@ function click(){
   if (mouseIsPressed){
     pos.set(floor(pmouseX / pxSize), floor(pmouseY / pxSize));
     if (mouseButton === LEFT && pos.x > 0 && pos.y > 0 && pos.x < gridWidth - 1){
-		if (brushChoice == false)
+		if (brushChoice == 'round')
     		roundBrush(pos.x, pos.y, env);
 		else
     		rectBrush(pos.x, pos.y, env);
@@ -78,27 +79,61 @@ function  randomizeColorRGBtoHexNew(c){
   }
 
 function  checkSelection(){
-  element = document.getElementById("element").value;
-  brushChoice = boolean(document.getElementById("brushChoice").value);
-  brushSize = int(document.getElementById("brushSize").value);
-  gridWidth = int(document.getElementById("gridWidth").value);
-  gridHeight = int(document.getElementById("gridHeight").value);
-  document.getElementById("framerate").innerHTML = floor(frameRate());
-  document.getElementById("total").innerHTML = env.particleSet.size;
-  document.getElementById("posX").innerHTML = pos.x;
-  document.getElementById("posY").innerHTML = pos.y;
-  if (floor(frameRate()) < 45){
-	document.getElementById("framerate").style.backgroundColor="lightcoral";
-  }
-  else
-	document.getElementById("framerate").style.backgroundColor="lightgreen";
+	element = document.querySelector('input[name="element"]:checked').value;
+	// element = document.getElementById("element").value;
+	// brushChoice = boolean(document.getElementById("brushChoice").value);
+	brushChoice = document.querySelector('input[name="brushChoice"]:checked').value;
+	brushSize = int(document.querySelector('input[name="brushSize"]:checked').value);
+	// brushSize = int(document.getElementById("brushSize").value);
+	gridWidth = int(document.getElementById("gridWidth").value);
+	gridHeight = int(document.getElementById("gridHeight").value);
+	document.getElementById("framerate").innerHTML = floor(frameRate());
+	document.getElementById("total").innerHTML = env.particleSet.size;
+	document.getElementById("posX").innerHTML = pos.x;
+	document.getElementById("posY").innerHTML = pos.y;
+	if (brushChoice == 'round'){
+		document.getElementById("size-1-span").style.borderRadius="100%";
+		document.getElementById("size-3-span").style.borderRadius="100%";
+		document.getElementById("size-5-span").style.borderRadius="100%";
+		document.getElementById("size-10-span").style.borderRadius="100%";
+	}
+	else{
+		document.getElementById("size-1-span").style.borderRadius="0%";
+		document.getElementById("size-3-span").style.borderRadius="0%";
+		document.getElementById("size-5-span").style.borderRadius="0%";
+		document.getElementById("size-10-span").style.borderRadius="0%";
+	}
+  	if (floor(frameRate()) < 45){
+		document.getElementById("framerate").style.backgroundColor="lightcoral";
+  	}
+  	else
+		document.getElementById("framerate").style.backgroundColor="lightgreen";
+}
+
+function setupUI(){
+	document.documentElement.style.setProperty('--sand-color', randomizeColorRGBtoHexNew(SAND_COLOR));
+	document.documentElement.style.setProperty('--stone-color', randomizeColorRGBtoHexNew(STONE_COLOR));
+	document.documentElement.style.setProperty('--wood-color', randomizeColorRGBtoHexNew(WOOD_COLOR));
+	document.documentElement.style.setProperty('--water-color', randomizeColorRGBtoHexNew(WATER_COLOR));
+	document.documentElement.style.setProperty('--steam-color', randomizeColorRGBtoHexNew(STEAM_COLOR));
+	document.documentElement.style.setProperty('--fire-color', randomizeColorRGBtoHexNew(FIRE_COLOR));
+	document.documentElement.style.setProperty('--dirt-color', randomizeColorRGBtoHexNew(DIRT_COLOR));
+	document.documentElement.style.setProperty('--oil-color', randomizeColorRGBtoHexNew(OIL_COLOR));
+	document.documentElement.style.setProperty('--gas-color', randomizeColorRGBtoHexNew(GAS_COLOR));
+	document.documentElement.style.setProperty('--acid-color', randomizeColorRGBtoHexNew(ACID_COLOR));
+	document.documentElement.style.setProperty('--gunpowder-color', randomizeColorRGBtoHexNew(GUNPOWDER_COLOR));
+	document.documentElement.style.setProperty('--lava-color', randomizeColorRGBtoHexNew(LAVA_COLOR));
+	document.documentElement.style.setProperty('--ice-color', randomizeColorRGBtoHexNew(ICE_COLOR));
 }
 
 function rectBrush(x, y, env){
   	for (let i = x - brushSize; i <= x + brushSize; i++){
 		for (let j = y - brushSize; j <= y + brushSize; j++){
 			if (checkInBoundary(i, j)){
-				if (env.grid[i][j] == false && random() < SPAWN_RATE)
+				let spawn = SPAWN_RATE
+				if (getParentName(env) == "Particle")
+							spawn = 1;
+				if (env.grid[i][j] == false && random() < spawn)
 					env.addParticle(new TYPE[element](i, j, env));
 				else if (element == 'void' && env.grid[i][j] != false)
 					env.delParticle(env.grid[i][j]);
