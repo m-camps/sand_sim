@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en"><head>
+    <script src="library/p5.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8">
+
+  </head>
+  <body>
+    <script src="env.js"></script>
+    <script src="particle.js"></script>
+	<script src="var.js"></script>
+    <script src="sketch.js"></script>
+	<!-- <select id="element">
+		<option value="sand">Sand</option>
+		<option value="stone">Stone</option>
+		<option value="wood">Wood</option>
+		<option value="water">Water</option>
+		<option value="steam">Steam</option>
+		<option value="fire">Fire</option>
+		<option value="dirt">Dirt</option>
+		<option value="oil">Oil</option>
+		<option value="gas">Gas</option>
+		<option value="acid">Acid</option>
+		<option value="gunpowder">Gunpowder</option>
+		<option value="lava">Lava</option>
+		<option value="ice">Ice</option>
+		<option value="void">Void</option>
+	</select> -->
+	<div class="data">
+		<p>FPS:</p><p id="framerate">hey</p>
+		<p>Total Particles:</p><p id="total"></p>
+		<p>(</p><p id="posX"></p><p>,</p><p id="posY"></p><p>)</p>
+	</div>
+	<br>
+	<div class="brush-select">
+		<input type="radio" id="round-radio" name="brushChoice" value="round" checked>
+		<label for="round-radio">
+			<span id="round-span"></span>
+		</label>
+		<input type="radio" id="rect-radio" name="brushChoice" value="rect">
+		<label for="rect-radio">
+			<span id="rect-span"></span>
+		</label>
+	</div>
+	<div class="brush-size" id="brush-size">
+		<input type="radio" id="size-10" name="brushSize" value="10">
+		<label for="size-10">
+			<span id="size-10-span"></span>
+		</label>
+		<input type="radio" id="size-5" name="brushSize" value="5"checked>
+		<label for="size-5">
+			<span id="size-5-span"></span>
+		</label>
+		<input type="radio" id="size-3" name="brushSize" value="3">
+		<label for="size-3">
+			<span id="size-3-span"></span>
+		</label>
+		<input type="radio" id="size-1" name="brushSize" value="0">
+		<label for="size-1">
+			<span id="size-1-span"></span>
+		</label>
+	</div>
+	<div class="reset-button">
+		<input type="text" id="gridWidth" value="100"></input>
+		<input type="text" id="gridHeight" value="100"></input>
+		<button id="reset-button" onclick="resetGrid()">Clear</button>
+	</div>
+	<div class="radio-button">
+		<input type="radio" id="sand" name="element" value="sand">
+		<label id="sand-label" for="sand">Sand</label>
+		<input type="radio" id="stone"name="element" value="stone" checked>
+		<label id="stone-label" for="stone">Stone</label>
+		<input type="radio" id="wood" name="element" value="wood">
+		<label id="wood-label"for="wood">Wood</label>
+		<input type="radio" id="water" name="element" value="water">
+		<label id="water-label" for="water">Water</label>
+		<input type="radio" id="steam" name="element" value="steam">
+		<label id="steam-label" for="steam">Steam</label>
+		<input type="radio" id="fire" name="element" value="fire">
+		<label id="fire-label" for="fire">Fire</label>
+		<input type="radio" id="dirt" name="element" value="dirt">
+		<label id="dirt-label" for="dirt">Dirt</label>
+		<input type="radio" id="oil" name="element" value="oil">
+		<label id="oil-label" for="oil">Oil</label>
+		<input type="radio" id="gas" name="element" value="gas">
+		<label id="gas-label" for="gas">Gas</label>
+		<input type="radio" id="acid" name="element" value="acid">
+		<label id="acid-label" for="acid">Acid</label>
+		<input type="radio" id="gunpowder" name="element" value="gunpowder">
+		<label id="gunpowder-label" for="gunpowder">Gunpowder</label>
+		<input type="radio" id="lava" name="element" value="lava">
+		<label id="lava-label" for="lava">Lava</label>
+		<input type="radio" id="ice" name="element" value="ice">
+		<label id="ice-label" for="ice">Ice</label>
+		<input type="radio" id="void" name="element" value="void">
+		<label for="void">Delete</label>
+	</div>
+    <div id="canvas-div"></div>
+  </body>
+</html>

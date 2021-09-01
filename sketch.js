@@ -26,10 +26,11 @@ function draw() {
   env.calcParticle();
   env.paintParticle();
   checkSelection();
-//   console.log(getParentName() == "particle");
 }
 
 function resetGrid(){
+	gridWidth = int(document.querySelector('input[name="pixelSize"]:checked').value);
+	gridHeight = int(document.querySelector('input[name="pixelSize"]:checked').value);
 	pxSize = 800 / gridHeight;
 	resizeCanvas(gridWidth * pxSize, gridHeight * pxSize);
 	background(BACKGROUND_COLOR);
@@ -84,13 +85,12 @@ function  checkSelection(){
 	// brushChoice = boolean(document.getElementById("brushChoice").value);
 	brushChoice = document.querySelector('input[name="brushChoice"]:checked').value;
 	brushSize = int(document.querySelector('input[name="brushSize"]:checked').value);
-	// brushSize = int(document.getElementById("brushSize").value);
-	gridWidth = int(document.getElementById("gridWidth").value);
-	gridHeight = int(document.getElementById("gridHeight").value);
+	if (int(document.querySelector('input[name="pixelSize"]:checked').value) != gridWidth)
+		resetGrid();
 	document.getElementById("framerate").innerHTML = floor(frameRate());
 	document.getElementById("total").innerHTML = env.particleSet.size;
-	document.getElementById("posX").innerHTML = pos.x;
-	document.getElementById("posY").innerHTML = pos.y;
+	// document.getElementById("posX").innerHTML = pos.x;
+	// document.getElementById("posY").innerHTML = pos.y;
 	if (brushChoice == 'round'){
 		document.getElementById("size-1-span").style.borderRadius="100%";
 		document.getElementById("size-3-span").style.borderRadius="100%";
@@ -103,11 +103,11 @@ function  checkSelection(){
 		document.getElementById("size-5-span").style.borderRadius="0%";
 		document.getElementById("size-10-span").style.borderRadius="0%";
 	}
-  	if (floor(frameRate()) < 45){
-		document.getElementById("framerate").style.backgroundColor="lightcoral";
-  	}
-  	else
-		document.getElementById("framerate").style.backgroundColor="lightgreen";
+  	// if (floor(frameRate()) < 45){
+	// 	document.getElementById("framerate").style.backgroundColor="lightcoral";
+  	// }
+  	// else
+	// 	document.getElementById("framerate").style.backgroundColor="lightgreen";
 }
 
 function setupUI(){
