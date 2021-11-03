@@ -1,5 +1,6 @@
 # Sand Simulation
 I started this project to get to know [p5.js](https://p5js.org/) and javascript and to get more of a feel for object oriented programming.
+
 Click [here](https://m-camps.github.io/sand_sim/) for a preview
 ## Features
 
